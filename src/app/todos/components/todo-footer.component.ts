@@ -7,9 +7,9 @@ import { TodoFilter } from '../todos.signal';
    selector: 'app-todo-footer',
    standalone: true,
    template: `
-      <footer id="footer" class="footer">
-         <span id="todo-count" class="todo-count">{{ incompleteTodosCount }} items left</span>
-         <ul id="filters" class="filters">
+      <footer class="footer">
+         <span class="todo-count">{{ incompleteTodosCount }} items left</span>
+         <ul class="filters">
             <li>
                <a
                   routerLink="/"
@@ -38,15 +38,100 @@ import { TodoFilter } from '../todos.signal';
                >
             </li>
          </ul>
-         <button
-            id="clear-completed"
-            *ngIf="hasCompletedTodos"
-            class="clear-completed"
-            (click)="clearCompleted.emit()">
-            Clear completed
-         </button>
+         <div class="footer-right">
+            <button
+               *ngIf="hasCompletedTodos"
+               class="clear-completed"
+               (click)="clearCompleted.emit()">
+               Clear completed
+            </button>
+         </div>
       </footer>
    `,
+   styles: [
+      `
+         .footer {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 14px 24px;
+            background: #fff;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #666;
+            gap: 8px;
+         }
+
+         .todo-count {
+            white-space: nowrap;
+         }
+
+         .filters {
+            display: flex;
+            list-style: none;
+            gap: 4px;
+            justify-content: center;
+            flex-wrap: nowrap;
+         }
+
+         .filters li {
+            flex-shrink: 0;
+         }
+
+         .filters a {
+            display: block;
+            padding: 5px 14px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: #555;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            transition: border-color 0.15s, color 0.15s;
+         }
+
+         .filters a:hover {
+            border-color: #ccc;
+         }
+
+         .filters a.selected {
+            border-color: #6c63ff;
+            color: #6c63ff;
+            font-weight: 600;
+         }
+
+         .footer-right {
+            display: flex;
+            justify-content: flex-end;
+         }
+
+         .clear-completed {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 13px;
+            text-decoration: underline;
+            padding: 4px 0;
+            white-space: nowrap;
+         }
+
+         .clear-completed:hover {
+            color: #555;
+         }
+
+         @media (max-width: 520px) {
+            .footer {
+               grid-template-columns: 1fr;
+               justify-items: center;
+               gap: 10px;
+            }
+
+            .footer-right {
+               justify-content: center;
+            }
+         }
+      `,
+   ],
    imports: [RouterLink, NgIf],
    changeDetection: ChangeDetectionStrategy.OnPush,
 })

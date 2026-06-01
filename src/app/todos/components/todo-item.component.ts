@@ -6,39 +6,54 @@ import {
    Output,
    signal,
 } from '@angular/core';
+import { NgIf } from '@angular/common';
 import { Todo } from '../todos.signal';
 
 @Component({
    selector: 'app-todo-item',
    standalone: true,
+   imports: [NgIf],
    template: `
-      <li [class.completed]="todo.completed" [class.editing]="editing()">
-         <div class="view">
+      <div class="todo-card" [class.completed]="todo.completed">
+         <div class="card-top" *ngIf="!editing()">
             <input
                class="toggle"
                type="checkbox"
                [checked]="todo.completed"
                (click)="toggle.emit(todo.id)" />
-            <label>{{ todo.text }}</label>
+            <span class="todo-text">{{ todo.text }}</span>
+         </div>
+         <input
+            class="edit-input"
+            type="text"
+            #textInput
+            [hidden]="!editing()"
+            [value]="todo.text"
+            (keyup.enter)="updateText(todo.id, textInput.value)"
+            (keyup.escape)="editing.set(false)"
+            (blur)="updateText(todo.id, textInput.value)" />
+         <div class="card-actions" *ngIf="!editing()">
             <!-- eslint-disable-next-line -->
             <button class="edit-btn" title="Edit" (click)="onEditClick(textInput)">
                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                   <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                </svg>
+               Edit
             </button>
             <!-- eslint-disable-next-line -->
-            <button class="destroy" (click)="delete.emit(todo.id)"></button>
+            <button class="delete-btn" title="Delete" (click)="delete.emit(todo.id)">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                  <path d="M10 11v6"/>
+                  <path d="M14 11v6"/>
+                  <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+               </svg>
+               Delete
+            </button>
          </div>
-         <input
-            class="edit"
-            type="text"
-            #textInput
-            [hidden]="editing()"
-            [value]="todo.text"
-            (keyup.enter)="updateText(todo.id, textInput.value)"
-            (blur)="updateText(todo.id, textInput.value)" />
-      </li>
+      </div>
    `,
    changeDetection: ChangeDetectionStrategy.OnPush,
    styles: [
@@ -47,43 +62,101 @@ import { Todo } from '../todos.signal';
             display: block;
          }
 
-         .toggle,
-         .destroy,
-         .edit-btn {
+         .todo-card {
+            background: #fff;
+            border-radius: 0;
+            box-shadow: none;
+            border: 1px solid #e8e8e8;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: background 0.2s;
+            min-height: 120px;
+         }
+
+         .todo-card:hover {
+            background: #f9f9ff;
+         }
+
+         .todo-card.completed .todo-text {
+            text-decoration: line-through;
+            color: #aaa;
+         }
+
+         .card-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            flex: 1;
+         }
+
+         .toggle {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
             cursor: pointer;
+            accent-color: #6c63ff;
+            flex-shrink: 0;
+         }
+
+         .todo-text {
+            font-size: 15px;
+            color: #333;
+            line-height: 1.5;
+            word-break: break-word;
+         }
+
+         .card-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+         }
+
+         .edit-btn,
+         .delete-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: opacity 0.2s, transform 0.1s;
+         }
+
+         .edit-btn:hover,
+         .delete-btn:hover {
+            opacity: 0.85;
+            transform: translateY(-1px);
+         }
+
+         .edit-btn svg,
+         .delete-btn svg {
+            width: 14px;
+            height: 14px;
          }
 
          .edit-btn {
-            position: absolute;
-            right: 45px;
-            top: 0;
-            bottom: 0;
-            width: 36px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            background: none;
-            border: none;
-            padding: 0;
-            color: #999;
-            transition: color 0.2s;
-         }
-
-         .edit-btn svg {
-            width: 16px;
-            height: 16px;
-         }
-
-         .edit-btn:hover {
+            background: #f0f0f0;
             color: #555;
          }
 
-         li:hover .edit-btn {
-            display: flex;
+         .delete-btn {
+            background: #e53e3e;
+            color: #fff;
          }
 
-         li.editing .edit-btn {
-            display: none;
+         .edit-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 2px solid #6c63ff;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            box-sizing: border-box;
          }
       `,
    ],

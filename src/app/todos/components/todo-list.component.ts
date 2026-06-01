@@ -9,8 +9,8 @@ import { TodoItemComponent } from './todo-item.component';
    standalone: true,
    imports: [NgIf, NgFor, TodoItemComponent],
    template: `
-      <section id="main" class="main">
-         <ul id="todo-list" class="todo-list">
+      <section class="main">
+         <div class="todo-grid">
             <ng-container *ngFor="let todo of todos; trackBy: todosTrackByFn">
                <app-todo-item
                   @fadeOut
@@ -19,9 +19,38 @@ import { TodoItemComponent } from './todo-item.component';
                   (update)="update.emit($event)"
                   (delete)="delete.emit($event)" />
             </ng-container>
-         </ul>
+         </div>
       </section>
    `,
+   styles: [
+      `
+         .main {
+            padding: 0;
+         }
+
+         .todo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+         }
+
+         .todo-grid > * {
+            min-width: 0;
+         }
+
+         @media (max-width: 768px) {
+            .todo-grid {
+               grid-template-columns: repeat(2, 1fr);
+            }
+         }
+
+         @media (max-width: 480px) {
+            .todo-grid {
+               grid-template-columns: 1fr;
+            }
+         }
+      `,
+   ],
    changeDetection: ChangeDetectionStrategy.OnPush,
    animations: [
       trigger('fadeOut', [

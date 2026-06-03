@@ -1,6 +1,19 @@
-import { Routes } from '@angular/router';
+import { Routes } from '@angular/router'
+import { authGuard } from './auth/auth.guard'
 
 export const routes: Routes = [
-   { path: 'todos', loadChildren: () => import('./todos/todo.routes') },
+   {
+      path: 'login',
+      loadComponent: () => import('./auth/login.component'),
+   },
+   {
+      path: 'signup',
+      loadComponent: () => import('./auth/signup.component'),
+   },
+   {
+      path: 'todos',
+      loadChildren: () => import('./todos/todo.routes'),
+      canActivate: [authGuard],
+   },
    { path: '**', redirectTo: 'todos', pathMatch: 'full' },
-];
+]

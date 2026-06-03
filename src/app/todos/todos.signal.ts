@@ -12,6 +12,7 @@ import {
    writeBatch,
 } from 'firebase/firestore'
 import { db } from '../firebase.config'
+import { AuthService } from '../auth/auth.service'
 
 export interface Todo {
    id: string
@@ -25,7 +26,14 @@ export enum TodoFilter {
    COMPLETED = 'true',
 }
 
-function todosFactory(route = inject(ActivatedRoute), destroyRef = inject(DestroyRef)) {
+function todosFactory(
+   route = inject(ActivatedRoute),
+   destroyRef = inject(DestroyRef),
+   auth = inject(AuthService),
+) {
+   const uid = auth.user()!.uid
+   const todosCol = collection(db, `users/${uid}/todos`)
+
    const todos = signal<Todo[]>([])
    const hasTodos = computed(() => todos().length > 0)
    const hasCompletedTodos = computed(() => todos().some(todo => todo.completed))
@@ -55,7 +63,6 @@ function todosFactory(route = inject(ActivatedRoute), destroyRef = inject(Destro
       }
    })
 
-   const todosCol = collection(db, 'todos')
    const unsubscribe = onSnapshot(todosCol, snapshot => {
       todos.set(snapshot.docs.map(d => ({ id: d.id, ...(d.data() as Omit<Todo, 'id'>) })))
    })
@@ -72,19 +79,19 @@ function todosFactory(route = inject(ActivatedRoute), destroyRef = inject(Destro
       },
       toggle: (id: string) => {
          const todo = todos().find(t => t.id === id)
-         if (todo) updateDoc(doc(db, 'todos', id), { completed: !todo.completed })
+         if (todo) updateDoc(doc(db, `users/${uid}/todos`, id), { completed: !todo.completed })
       },
       delete: (id: string) => {
-         deleteDoc(doc(db, 'todos', id))
+         deleteDoc(doc(db, `users/${uid}/todos`, id))
       },
       update: (id: string, text: string) => {
-         updateDoc(doc(db, 'todos', id), { text })
+         updateDoc(doc(db, `users/${uid}/todos`, id), { text })
       },
       clearComplete: () => {
          const batch = writeBatch(db)
          todos()
             .filter(t => t.completed)
-            .forEach(t => batch.delete(doc(db, 'todos', t.id)))
+            .forEach(t => batch.delete(doc(db, `users/${uid}/todos`, t.id)))
          batch.commit()
       },
    }

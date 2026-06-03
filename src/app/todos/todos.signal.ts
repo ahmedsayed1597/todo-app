@@ -20,7 +20,6 @@ function todosFactory(route = inject(ActivatedRoute), http = inject(HttpClient))
    const todos = signal<Todo[]>([]);
    const hasTodos = computed(() => todos().length > 0);
    const hasCompletedTodos = computed(() => todos().some(todo => todo.completed));
-   const incompleteTodosCount = computed(() => todos().filter(todo => !todo.completed).length);
    const completedQueryParam = toSignal(route.queryParams.pipe(map(q => q['completed'])));
    const sortByDateQueryParam = toSignal(route.queryParams.pipe(map(q => q['sortByDate'])));
 
@@ -34,6 +33,8 @@ function todosFactory(route = inject(ActivatedRoute), http = inject(HttpClient))
             return todos();
       }
    });
+
+   const incompleteTodosCount = computed(() => filteredTodos().length);
 
    const _todos = computed(() => {
       switch (sortByDateQueryParam()) {

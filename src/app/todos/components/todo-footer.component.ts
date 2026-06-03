@@ -51,15 +51,16 @@ import { TodoFilter } from '../todos.signal';
    styles: [
       `
          .footer {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
+            display: flex;
             align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
             padding: 14px 24px;
             background: #38a169;
             border-top: none;
             font-size: 14px;
             color: #fff;
-            gap: 8px;
+            gap: 10px;
             position: sticky;
             bottom: 0;
          }
@@ -121,17 +122,6 @@ import { TodoFilter } from '../todos.signal';
             color: #fff;
          }
 
-         @media (max-width: 520px) {
-            .footer {
-               grid-template-columns: 1fr;
-               justify-items: center;
-               gap: 10px;
-            }
-
-            .footer-right {
-               justify-content: center;
-            }
-         }
       `,
    ],
    imports: [RouterLink, NgIf],

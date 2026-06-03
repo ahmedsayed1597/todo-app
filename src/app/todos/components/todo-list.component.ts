@@ -25,13 +25,13 @@ import { TodoItemComponent } from './todo-item.component';
    styles: [
       `
          .main {
-            padding: 0;
+            padding: 8px 16px 16px;
          }
 
          .todo-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0;
+            gap: 16px;
          }
 
          .todo-grid > * {

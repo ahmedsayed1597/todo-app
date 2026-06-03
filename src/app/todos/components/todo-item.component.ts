@@ -63,25 +63,35 @@ import { Todo } from '../todos.signal';
          }
 
          .todo-card {
-            background: #fff;
-            border-radius: 0;
-            box-shadow: none;
-            border: 1px solid #e8e8e8;
-            padding: 20px 24px;
+            background: #fafafa;
+            border-radius: 12px;
+            border-left: 4px solid #6c63ff;
+            box-shadow:
+               0 2px 4px rgba(0, 0, 0, 0.06),
+               0 6px 16px rgba(0, 0, 0, 0.08);
+            padding: 18px 20px 18px 20px;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            transition: background 0.2s;
+            transition: box-shadow 0.2s, transform 0.2s;
             min-height: 120px;
          }
 
          .todo-card:hover {
-            background: #f9f9ff;
+            box-shadow:
+               0 4px 8px rgba(0, 0, 0, 0.08),
+               0 12px 28px rgba(108, 99, 255, 0.14);
+            transform: translateY(-3px);
+         }
+
+         .todo-card.completed {
+            border-left-color: #48bb78;
+            background: #f7fdf9;
          }
 
          .todo-card.completed .todo-text {
             text-decoration: line-through;
-            color: #aaa;
+            color: #9ca3af;
          }
 
          .card-top {
@@ -102,7 +112,8 @@ import { Todo } from '../todos.signal';
 
          .todo-text {
             font-size: 15px;
-            color: #333;
+            font-weight: 500;
+            color: #1a1a2e;
             line-height: 1.5;
             word-break: break-word;
          }
@@ -118,18 +129,17 @@ import { Todo } from '../todos.signal';
             display: flex;
             align-items: center;
             gap: 5px;
-            padding: 6px 12px;
+            padding: 5px 14px;
             border: none;
-            border-radius: 6px;
+            border-radius: 20px;
             cursor: pointer;
             font-size: 13px;
             font-weight: 500;
-            transition: opacity 0.2s, transform 0.1s;
+            transition: background 0.2s, transform 0.1s;
          }
 
          .edit-btn:hover,
          .delete-btn:hover {
-            opacity: 0.85;
             transform: translateY(-1px);
          }
 
@@ -140,13 +150,21 @@ import { Todo } from '../todos.signal';
          }
 
          .edit-btn {
-            background: #f0f0f0;
-            color: #555;
+            background: #ede9fe;
+            color: #6c63ff;
+         }
+
+         .edit-btn:hover {
+            background: #ddd6fe;
          }
 
          .delete-btn {
-            background: #e53e3e;
-            color: #fff;
+            background: #fee2e2;
+            color: #dc2626;
+         }
+
+         .delete-btn:hover {
+            background: #fecaca;
          }
 
          .edit-input {
@@ -157,6 +175,8 @@ import { Todo } from '../todos.signal';
             font-size: 15px;
             outline: none;
             box-sizing: border-box;
+            background: #fff;
+            color: #1a1a2e;
          }
       `,
    ],

@@ -36,7 +36,7 @@ import { TODOS_STORE, provideTodosStore } from './todos.signal'
       `
          .app-wrapper {
             min-height: 100vh;
-            background: #fff;
+            background: #f4f4f8;
             display: flex;
             flex-direction: column;
          }

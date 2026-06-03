@@ -27,7 +27,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angul
             display: flex;
             align-items: center;
             width: 100%;
-            max-width: 560px;
             gap: 10px;
          }
 

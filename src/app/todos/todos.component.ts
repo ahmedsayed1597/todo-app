@@ -41,7 +41,7 @@ import { TODOS_STORE, provideTodosStore } from './todos.signal';
             padding: 32px 24px 28px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: stretch;
             gap: 16px;
          }
 
@@ -51,6 +51,7 @@ import { TODOS_STORE, provideTodosStore } from './todos.signal';
             font-weight: 700;
             color: #fff;
             letter-spacing: 1px;
+            text-align: center;
          }
       `,
    ],

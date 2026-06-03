@@ -55,11 +55,13 @@ import { TodoFilter } from '../todos.signal';
             grid-template-columns: 1fr auto 1fr;
             align-items: center;
             padding: 14px 24px;
-            background: #fff;
-            border-top: 1px solid #eee;
+            background: #38a169;
+            border-top: none;
             font-size: 14px;
-            color: #666;
+            color: #fff;
             gap: 8px;
+            position: sticky;
+            bottom: 0;
          }
 
          .todo-count {
@@ -83,19 +85,19 @@ import { TodoFilter } from '../todos.signal';
             padding: 5px 14px;
             border-radius: 20px;
             text-decoration: none;
-            color: #555;
+            color: #fff;
             border: 1px solid transparent;
             white-space: nowrap;
-            transition: border-color 0.15s, color 0.15s;
+            transition: border-color 0.15s, background 0.15s;
          }
 
          .filters a:hover {
-            border-color: #ccc;
+            border-color: rgba(255, 255, 255, 0.6);
          }
 
          .filters a.selected {
-            border-color: #6c63ff;
-            color: #6c63ff;
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.2);
             font-weight: 600;
          }
 
@@ -107,7 +109,7 @@ import { TodoFilter } from '../todos.signal';
          .clear-completed {
             background: none;
             border: none;
-            color: #999;
+            color: rgba(255, 255, 255, 0.8);
             cursor: pointer;
             font-size: 13px;
             text-decoration: underline;
@@ -116,7 +118,7 @@ import { TodoFilter } from '../todos.signal';
          }
 
          .clear-completed:hover {
-            color: #555;
+            color: #fff;
          }
 
          @media (max-width: 520px) {
